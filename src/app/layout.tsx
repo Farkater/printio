@@ -1,31 +1,33 @@
-"use client";
+'use client';
 
-import * as M from "@mantine/core";
-import { Inter } from "next/font/google";
+import * as M from '@mantine/core';
+import { Inter } from 'next/font/google';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "Print.io",
-  description: "Print on anything",
+  title: 'Print.io',
+  description: 'Print on anything',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <M.MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles withNormalizeCSS>
+        <M.MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
           <M.AppShell
             padding='md'
             styles={theme => ({
               main: {
-                backgroundColor:
-                  theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
               },
             })}
             header={
               <M.Header height={60} p='xs'>
-                <M.Title align='center'>Print.io</M.Title>
+                <Link href={'/'}>
+                  <M.Title align='center'>Print.io</M.Title>
+                </Link>
               </M.Header>
             }
           >

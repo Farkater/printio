@@ -1,130 +1,152 @@
-"use client";
-import { useState } from "react";
-import * as M from "@mantine/core";
-import Link from "next/link";
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import * as M from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useAtom } from 'jotai';
 
-import { categories } from "@/app/metaData";
-import { Dropzone } from "./dropzone";
+import { checkoutAtom } from '@/app/checkout/state';
+import { categories } from '@/app/metaData';
+import { Dropzone } from './dropzone';
 
 interface Props {
   params: { category: keyof typeof categories };
 }
 
 export default function Constructor({ params }: Props) {
-  const { title, steps } = categories[params.category];
+  const { categoryName, steps } = categories[params.category];
+  const [checkoutState, setCheckoutState] = useAtom(checkoutAtom);
+  const form = useForm<(typeof checkoutState)['checkout']>();
+  const router = useRouter();
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
 
-  const [value, onChange] = useState("rgba(47, 119, 150, 0.7)");
-  const [active, setActive] = useState(0);
-  const onNextStep = () => setActive(current => (current < steps.length ? current + 1 : current));
-  const onPrevStep = () => setActive(current => (current > 0 ? current - 1 : current));
+  const onNextStep = () => setActiveStepIndex(current => (current < steps.length ? current + 1 : current));
+  const onPrevStep = () => setActiveStepIndex(current => (current > 0 ? current - 1 : current));
+
+  const handleSubmit = (values: (typeof checkoutState)['checkout']) => {
+    setCheckoutState({ category: params.category, checkout: values });
+    router.push('/checkout');
+  };
+  const shouldCheckout = activeStepIndex === steps.length - 1;
 
   return (
     <M.Container>
-      <M.Title align='center' mb='lg'>
-        Constructor of {title}
-      </M.Title>
-      <M.Stepper active={active} onStepClick={setActive} breakpoint='sm'>
-        {steps.map(step => {
-          const { title, description, options: stepOptions } = step;
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <M.Title align='center' mb='lg'>
+          Constructor of {categoryName}
+        </M.Title>
+        <M.Stepper active={activeStepIndex} onStepClick={setActiveStepIndex} breakpoint='sm'>
+          {steps.map(step => {
+            const { stepTitle, stepDescription, options: stepOptions } = step;
 
-          return (
-            <M.Stepper.Step key={title} label={title} description={description}>
-              {Object.entries(stepOptions).map(([selectorName, options], optionIndex) => {
-                let content;
-                if (typeof options.data !== "string") {
-                  const selectorOptions = options.data.map(option => ({
-                    value: option,
-                    label: option,
-                  }));
+            return (
+              <M.Stepper.Step key={stepTitle} label={stepTitle} description={stepDescription}>
+                {Object.entries(stepOptions).map(([selectorName, options], optionIndex) => {
+                  let content;
+                  if (typeof options.data !== 'string') {
+                    const selectorOptions = options.data.map(option => ({
+                      value: option,
+                      label: option,
+                    }));
 
-                  if (selectorOptions.length <= 4) {
+                    if (selectorOptions.length <= 4) {
+                      content = (
+                        <M.Radio.Group
+                          name={selectorName}
+                          label={options.label}
+                          description={options.description}
+                          {...form.getInputProps(selectorName)}
+                        >
+                          <M.Group mt='xs'>
+                            {selectorOptions.map(option => {
+                              return <M.Radio key={option.value} {...option} />;
+                            })}
+                          </M.Group>
+                        </M.Radio.Group>
+                      );
+                    } else {
+                      content = (
+                        <M.Select
+                          key={selectorName}
+                          label={options.label}
+                          description={options.description}
+                          data={selectorOptions}
+                          {...form.getInputProps(selectorName)}
+                        />
+                      );
+                    }
+                  }
+
+                  if (options.data === 'boolean') {
                     content = (
-                      <M.Radio.Group
-                        name={selectorName}
-                        label={options.title}
-                        description={options.placeholder}
-                      >
-                        <M.Group mt='xs'>
-                          {selectorOptions.map(option => {
-                            return <M.Radio key={option.value} {...option} />;
-                          })}
-                        </M.Group>
-                      </M.Radio.Group>
-                    );
-                  } else {
-                    content = (
-                      <M.Select
-                        key={selectorName}
-                        label={options.title}
-                        placeholder={options.placeholder}
-                        data={selectorOptions}
+                      <M.Switch
+                        label={options.label}
+                        description={options.description}
+                        {...form.getInputProps(selectorName)}
                       />
                     );
                   }
-                }
 
-                if (options.data === "boolean") {
-                  content = <M.Switch label={options.title} description={options.placeholder} />;
-                }
+                  if (options.data === 'space') {
+                    content = <M.Space {...options.props} />;
+                  }
 
-                if (options.data === "space") {
-                  content = <M.Space {...options.props} />;
-                }
+                  if (options.data === 'color') {
+                    content = (
+                      <M.Stack align='center'>
+                        <M.ColorPicker format='rgba' {...form.getInputProps(selectorName)} />
+                      </M.Stack>
+                    );
+                  }
 
-                if (options.data === "color") {
-                  content = (
-                    <M.Stack align='center'>
-                      <M.ColorPicker format='rgba' value={value} onChange={onChange} />
-                      <M.Text>{value}</M.Text>
-                    </M.Stack>
-                  );
-                }
+                  if (options.data === 'file') {
+                    content = <Dropzone {...form.getInputProps(selectorName)} />;
+                  }
 
-                if (options.data === "file") {
-                  content = <Dropzone />;
-                }
-
-                if (options.data === "sizeInputGroup") {
-                  content = (
-                    <M.Group grow>
-                      <M.Text>{options.title}</M.Text>
-                      <M.Group grow>
-                        <M.NumberInput label='Width' />
-                        <M.NumberInput label='Height' />
-                        <M.NumberInput label='Length' />
+                  if (options.data === 'sizeInputGroup') {
+                    content = (
+                      <M.Group grow {...form.getInputProps(selectorName)}>
+                        <M.Text>{options.label}</M.Text>
+                        <M.Group grow>
+                          <M.NumberInput label='Width' />
+                          <M.NumberInput label='Height' />
+                          <M.NumberInput label='Length' />
+                        </M.Group>
                       </M.Group>
-                    </M.Group>
-                  );
-                }
+                    );
+                  }
 
-                return (
-                  <M.Box
-                    key={selectorName}
-                    mt='md'
-                    mb={optionIndex === Object.entries(stepOptions).length - 1 ? "xl" : ""}
-                  >
-                    {content}
-                  </M.Box>
-                );
-              })}
-            </M.Stepper.Step>
-          );
-        })}
-      </M.Stepper>
-      <M.Group grow mt='md'>
-        <M.Button onClick={onPrevStep} disabled={active === 0}>
-          Previous step
-        </M.Button>
-        {active === steps.length - 1 ? (
-          <Link href='/checkout'>
-            <M.Button fullWidth color='green'>
+                  return (
+                    <M.Box
+                      key={selectorName}
+                      mt='md'
+                      mb={optionIndex === Object.entries(stepOptions).length - 1 ? 'xl' : ''}
+                    >
+                      {content}
+                    </M.Box>
+                  );
+                })}
+              </M.Stepper.Step>
+            );
+          })}
+        </M.Stepper>
+
+        <M.Group grow mt='md'>
+          <M.Button onClick={onPrevStep} disabled={activeStepIndex === 0}>
+            Previous step
+          </M.Button>
+          {shouldCheckout ? (
+            // key prevent from from submitting...
+            <M.Button key='submit' type='submit' fullWidth color='green'>
               Checkout
             </M.Button>
-          </Link>
-        ) : (
-          <M.Button onClick={onNextStep}>Next step</M.Button>
-        )}
-      </M.Group>
+          ) : (
+            <M.Button key='next' onClick={onNextStep}>
+              Next step
+            </M.Button>
+          )}
+        </M.Group>
+      </form>
     </M.Container>
   );
 }

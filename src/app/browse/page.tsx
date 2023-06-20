@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Card from "./card";
-import * as M from "@mantine/core";
+import Card from './card';
+import * as M from '@mantine/core';
 
-import { categories } from "../metaData";
+import { categories } from '../metaData';
 
 export default function Browse() {
   return (
@@ -12,7 +12,7 @@ export default function Browse() {
       <M.Container size='xl'>
         <M.SimpleGrid cols={3}>
           {Object.values(categories).map(category => (
-            <Card key={category.title} {...category} />
+            <Card key={category.categoryName} {...category} />
           ))}
         </M.SimpleGrid>
       </M.Container>

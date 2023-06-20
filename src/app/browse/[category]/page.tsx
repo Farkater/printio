@@ -1,21 +1,21 @@
-"use client";
-import Link from "next/link";
-import { Title } from "@mantine/core";
-import * as M from "@mantine/core";
+'use client';
+import Link from 'next/link';
+import { Title } from '@mantine/core';
+import * as M from '@mantine/core';
 
-import { categories } from "@/app/metaData";
+import { categories } from '@/app/metaData';
 
 interface Props {
   params: { category: keyof typeof categories };
 }
 
 export default function Category({ params }: Props) {
-  const { title, previewImage } = categories[params.category];
+  const { categoryName, previewImage } = categories[params.category];
 
   return (
     <M.Grid>
       <M.Col>
-        <Title>{title}</Title>
+        <Title>{categoryName}</Title>
         <M.Image src={previewImage} withPlaceholder />
       </M.Col>
       <M.Col>

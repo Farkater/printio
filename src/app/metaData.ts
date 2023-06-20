@@ -1,7 +1,8 @@
-type Selector = "file" | "color" | "boolean" | "space" | "sizeInputGroup";
+type Selector = 'file' | 'color' | 'boolean' | 'space' | 'sizeInputGroup';
 
-type Option = {
-  title: string;
+export type Option = {
+  label: string;
+  description?: string;
   placeholder?: string;
   data: string[] | `${Selector}`;
   props?: any;
@@ -12,224 +13,225 @@ type Options = {
 };
 
 type Step = {
-  title: string;
-  description: string;
+  stepTitle: string;
+  stepDescription: string;
   options: Options;
 };
 
 type Category = {
-  title: string;
+  categoryName: string;
   path: string;
-  previewImage: string;
   steps: Step[];
+  previewImage: string;
 };
+type CategoryName = 'calendars' | 'tshirts' | 'bags' | 'stickers' | 'posters';
 
 type Categories = {
-  [key: string]: Category;
+  [key in CategoryName]: Category;
 };
 
 export const categories: Categories = {
   calendars: {
-    title: "Calendars",
-    path: "browse/calendars",
-    previewImage: "",
+    categoryName: 'Calendars',
+    path: 'browse/calendars',
+    previewImage: '',
     steps: [
       {
-        title: "Properties",
-        description: "Choose properties",
+        stepTitle: 'Properties',
+        stepDescription: 'Choose properties',
         options: {
-          types: {
-            title: "Тип календаря",
-            placeholder: "Выберите тип календаря",
-            data: ["foldable", "pocket size", "magnet", "desk"],
+          calendarTypes: {
+            label: 'Тип календаря',
+            description: 'Выберите тип календаря',
+            data: ['foldable', 'pocket size', 'magnet', 'desk'],
           },
           weekStart: {
-            title: "Week start",
-            placeholder: "Choose starting day of the week",
-            data: ["Monday", "Sunday"],
+            label: 'Week start',
+            description: 'Choose starting day of the week',
+            data: ['Monday', 'Sunday'],
           },
           holidayInfo: {
-            title: "Holidays info",
-            placeholder: "Do you want holidays marked?",
-            data: "boolean",
+            label: 'Holidays info',
+            description: 'Do you want holidays marked?',
+            data: 'boolean',
           },
           language: {
-            title: "Language",
-            placeholder: "In which language should calendar be?",
-            data: ["en", "pl"],
+            label: 'Language',
+            description: 'In which language should calendar be?',
+            data: ['en', 'pl'],
           },
           pageMaterial: {
-            title: "Choose page material",
-            placeholder: "Choose material for base and pages",
-            data: ["low density", "medium density", "high density"],
+            label: 'Choose page material',
+            description: 'Choose material for base and pages',
+            data: ['low density', 'medium density', 'high density'],
           },
           baseMaterial: {
-            title: "Base material",
-            placeholder: "Choose base material",
-            data: ["wood", "plastic", "cardboard"],
+            label: 'Base material',
+            description: 'Choose base material',
+            data: ['wood', 'plastic', 'cardboard'],
           },
         },
       },
       {
-        title: "Background",
-        description: "Choose background",
+        stepTitle: 'Background',
+        stepDescription: 'Choose background',
         options: {
           file: {
-            title: "Background as a picture",
-            placeholder: "Upload your picture",
-            data: "file",
+            label: 'Background as a picture',
+            description: 'Upload your picture',
+            data: 'file',
           },
           color: {
-            title: "Background as a color",
-            placeholder: "Choose a color",
-            data: "color",
+            label: 'Background as a color',
+            description: 'Choose a color',
+            data: 'color',
           },
         },
       },
     ],
   },
   tshirts: {
-    title: "T-shirts",
-    path: "browse/tshirts",
-    previewImage: "",
+    categoryName: 'T-shirts',
+    path: 'browse/tshirts',
+    previewImage: '',
     steps: [
       {
-        title: "Properties",
-        description: "Choose properties",
+        stepTitle: 'Properties',
+        stepDescription: 'Choose properties',
         options: {
           Sex: {
-            title: "Sex",
-            placeholder: "",
-            data: ["male", "female", "unisex"],
+            label: 'Sex',
+            description: '',
+            data: ['male', 'female', 'unisex'],
           },
           size: {
-            title: "Size",
-            placeholder: "Choose size",
-            data: ["xs", "s", "m", "l", "xl", "xxl"],
+            label: 'Size',
+            description: 'Choose size',
+            data: ['xs', 's', 'm', 'l', 'xl', 'xxl'],
           },
           printingTech: {
-            title: "Printing technology",
-            placeholder: "Choose technology you want T-shirts to be made with",
-            data: ["screen printing", "direct to garment", "direct to film"],
+            label: 'Printing technology',
+            description: 'Choose technology you want T-shirts to be made with',
+            data: ['screen printing', 'direct to garment', 'direct to film'],
           },
         },
       },
       {
-        title: "Print",
-        description: "Chose print",
+        stepTitle: 'Print',
+        stepDescription: 'Chose print',
         options: {
           file: {
-            title: "Custom",
-            placeholder: "Upload your file",
-            data: "file",
+            label: 'Custom',
+            description: 'Upload your file',
+            data: 'file',
           },
           color: {
-            title: "Color",
-            placeholder: "Choose color of T-shirt",
-            data: "color",
+            label: 'Color',
+            description: 'Choose color of T-shirt',
+            data: 'color',
           },
         },
       },
     ],
   },
   bags: {
-    title: "Paper bags",
-    path: "browse/bags",
-    previewImage: "",
+    categoryName: 'Paper bags',
+    path: 'browse/bags',
+    previewImage: '',
     steps: [
       {
-        title: "Material",
-        description: "Choose material",
+        stepTitle: 'Material',
+        stepDescription: 'Choose material',
         options: {
           material: {
-            title: "Material",
-            placeholder: "Choose material for bags",
+            label: 'Material',
+            description: 'Choose material for bags',
             // TODO Material dependant color selection
             data: [
-              "Unbleached kraft paper (no color picking)",
-              "Bleached kraft paper (no color picking)",
-              "Black kraft paper (no color picking)",
-              "Colored kraft paper",
-              "Duplex paper",
+              'Unbleached kraft paper (no color picking)',
+              'Bleached kraft paper (no color picking)',
+              'Black kraft paper (no color picking)',
+              'Colored kraft paper',
+              'Duplex paper',
             ],
           },
           size: {
-            title: "Size",
-            placeholder: "Enter size",
-            data: "sizeInputGroup",
+            label: 'Size',
+            description: 'Enter size',
+            data: 'sizeInputGroup',
           },
           finish: {
-            title: "Finish",
-            placeholder: "Choose finish for the surface",
-            data: ["Mate", "Glance"],
+            label: 'Finish',
+            description: 'Choose finish for the surface',
+            data: ['Mate', 'Glance'],
           },
           foil: {
-            title: "Foil",
-            placeholder: "Do you want foil on the surface?",
-            data: "boolean",
+            label: 'Foil',
+            description: 'Do you want foil on the surface?',
+            data: 'boolean',
           },
         },
       },
       {
-        title: "Parameters",
-        description: "Choose parameters of a bag",
+        stepTitle: 'Parameters',
+        stepDescription: 'Choose parameters of a bag',
         options: {
           colorOut: {
-            title: "Outside color",
-            placeholder: "Choose color for the outside",
-            data: "color",
+            label: 'Outside color',
+            description: 'Choose color for the outside',
+            data: 'color',
           },
           colorIn: {
-            title: "Inside color",
-            placeholder: "Choose color for the inside",
-            data: "color",
+            label: 'Inside color',
+            description: 'Choose color for the inside',
+            data: 'color',
           },
           handleType: {
-            title: "Handle",
-            placeholder: "Choose handle option",
-            data: ["Paper handles", "Rope handles"],
+            label: 'Handle',
+            description: 'Choose handle option',
+            data: ['Paper handles', 'Rope handles'],
           },
           bottomCardboard: {
-            title: "Bottom reinforcement",
-            placeholder: "Do you want cardboard bottom reinforcement?",
-            data: "boolean",
+            label: 'Bottom reinforcement',
+            description: 'Do you want cardboard bottom reinforcement?',
+            data: 'boolean',
           },
         },
       },
     ],
   },
   stickers: {
-    title: "Stickers",
-    path: "browse/stickers",
-    previewImage: "",
+    categoryName: 'Stickers',
+    path: 'browse/stickers',
+    previewImage: '',
     steps: [
       {
-        title: "Parameters",
-        description: "Choose parameters",
+        stepTitle: 'Parameters',
+        stepDescription: 'Choose parameters',
         options: {
           size: {
-            title: "Size",
-            placeholder:
-              "Enter size, for shape different from rectangle please consider outer points as a rectangle wall",
-            data: "sizeInputGroup",
+            label: 'Size',
+            description:
+              'Enter size, for shape different from rectangle please consider outer points as a rectangle wall',
+            data: 'sizeInputGroup',
           },
         },
       },
     ],
   },
   posters: {
-    title: "Posters",
-    path: "browse/posters",
-    previewImage: "",
+    categoryName: 'Posters',
+    path: 'browse/posters',
+    previewImage: '',
     steps: [
       {
-        title: "Parameters",
-        description: "Choose parameters",
+        stepTitle: 'Parameters',
+        stepDescription: 'Choose parameters',
         options: {
           size: {
-            title: "Size",
-            placeholder: "Enter size",
-            data: "sizeInputGroup",
+            label: 'Size',
+            description: 'Enter size',
+            data: 'sizeInputGroup',
           },
         },
       },

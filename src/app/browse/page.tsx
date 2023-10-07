@@ -10,9 +10,16 @@ export default function Browse() {
     <main>
       <M.Title align='center'>Browse</M.Title>
       <M.Container size='xl'>
-        <M.SimpleGrid cols={3}>
+        <M.SimpleGrid
+          cols={3}
+          mt='xl'
+          breakpoints={[
+            { maxWidth: '70rem', cols: 2, spacing: 'sm' },
+            { maxWidth: '50rem', cols: 1, spacing: 'sm' },
+          ]}
+        >
           {Object.values(categories).map(category => (
-            <Card key={category.categoryName} {...category} />
+            <Card key={category.categoryName} src={category.previewImage} {...category} />
           ))}
         </M.SimpleGrid>
       </M.Container>

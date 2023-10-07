@@ -1,4 +1,11 @@
-type Selector = 'file' | 'color' | 'boolean' | 'space' | 'sizeInputGroup';
+import CalendarImg from '../../public/Calendars-1.webp';
+import PaperBarsImg from '../../public/Paper bags-1.webp';
+import TshirtsImg from '../../public/T-shirts-1.webp';
+import PostersImg from '../../public/Posters-2.webp';
+import StickersImg from '../../public/Stickers-1.webp';
+
+export type CategoryName = 'calendars' | 'tshirts' | 'bags' | 'stickers' | 'posters';
+export type Selector = 'file' | 'color' | 'boolean' | 'space' | 'sizeInputGroup' | 'previewBuilder';
 
 export type Option = {
   label: string;
@@ -8,25 +15,24 @@ export type Option = {
   props?: any;
 };
 
-type Options = {
+export type Options = {
   [key: string]: Option;
 };
 
-type Step = {
+export type Step = {
   stepTitle: string;
   stepDescription: string;
   options: Options;
 };
 
-type Category = {
+export type Category = {
   categoryName: string;
   path: string;
   steps: Step[];
   previewImage: string;
 };
-type CategoryName = 'calendars' | 'tshirts' | 'bags' | 'stickers' | 'posters';
 
-type Categories = {
+export type Categories = {
   [key in CategoryName]: Category;
 };
 
@@ -34,15 +40,15 @@ export const categories: Categories = {
   calendars: {
     categoryName: 'Calendars',
     path: 'browse/calendars',
-    previewImage: '',
+    previewImage: CalendarImg.src,
     steps: [
       {
         stepTitle: 'Properties',
         stepDescription: 'Choose properties',
         options: {
           calendarTypes: {
-            label: 'Тип календаря',
-            description: 'Выберите тип календаря',
+            label: 'Calendar type',
+            description: 'Choose a calendar type',
             data: ['foldable', 'pocket size', 'magnet', 'desk'],
           },
           weekStart: {
@@ -77,14 +83,9 @@ export const categories: Categories = {
         stepDescription: 'Choose background',
         options: {
           file: {
-            label: 'Background as a picture',
-            description: 'Upload your picture',
-            data: 'file',
-          },
-          color: {
-            label: 'Background as a color',
-            description: 'Choose a color',
-            data: 'color',
+            label: 'Custom',
+            description: 'Upload your file',
+            data: 'previewBuilder',
           },
         },
       },
@@ -93,7 +94,7 @@ export const categories: Categories = {
   tshirts: {
     categoryName: 'T-shirts',
     path: 'browse/tshirts',
-    previewImage: '',
+    previewImage: TshirtsImg.src,
     steps: [
       {
         stepTitle: 'Properties',
@@ -123,12 +124,7 @@ export const categories: Categories = {
           file: {
             label: 'Custom',
             description: 'Upload your file',
-            data: 'file',
-          },
-          color: {
-            label: 'Color',
-            description: 'Choose color of T-shirt',
-            data: 'color',
+            data: 'previewBuilder',
           },
         },
       },
@@ -137,7 +133,7 @@ export const categories: Categories = {
   bags: {
     categoryName: 'Paper bags',
     path: 'browse/bags',
-    previewImage: '',
+    previewImage: PaperBarsImg.src,
     steps: [
       {
         stepTitle: 'Material',
@@ -203,7 +199,7 @@ export const categories: Categories = {
   stickers: {
     categoryName: 'Stickers',
     path: 'browse/stickers',
-    previewImage: '',
+    previewImage: StickersImg.src,
     steps: [
       {
         stepTitle: 'Parameters',
@@ -222,7 +218,7 @@ export const categories: Categories = {
   posters: {
     categoryName: 'Posters',
     path: 'browse/posters',
-    previewImage: '',
+    previewImage: PostersImg.src,
     steps: [
       {
         stepTitle: 'Parameters',

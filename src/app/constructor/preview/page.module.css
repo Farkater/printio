@@ -1,0 +1,11 @@
+.mask {
+  position: absolute;
+  inset: 0;
+}
+
+.previewContainer {
+  position: relative;
+}
+
+.userImage {
+}

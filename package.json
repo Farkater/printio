@@ -12,22 +12,31 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/server": "^11.11.0",
-    "@mantine/core": "^6.0.11",
-    "@mantine/dropzone": "^6.0.11",
+    "@mantine/carousel": "^6.0.19",
+    "@mantine/core": "^6.0.19",
+    "@mantine/dropzone": "^6.0.19",
     "@mantine/form": "^6.0.14",
-    "@mantine/hooks": "^6.0.11",
+    "@mantine/hooks": "^6.0.19",
     "@mantine/next": "^6.0.11",
     "@mantine/ssr": "^6.0.11",
     "@tabler/icons-react": "^2.20.0",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@types/uuid": "^9.0.5",
+    "embla-carousel-react": "7.1.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "fabric": "^5.3.0",
+    "fabricjs-react": "^1.2.1",
     "jotai": "^2.2.1",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/fabric": "^5.3.3"
   }
 }

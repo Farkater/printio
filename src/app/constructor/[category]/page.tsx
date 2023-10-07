@@ -4,30 +4,39 @@ import { useRouter } from 'next/navigation';
 import * as M from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useAtom } from 'jotai';
+import * as uuid from 'uuid';
 
-import { checkoutAtom } from '@/app/checkout/state';
-import { categories } from '@/app/metaData';
+import { checkoutAtom, CheckoutAtom } from '@/app/checkout/state';
+import { categories, CategoryName } from '@/app/metaData';
+import { PreviewBuilder } from '../preview/previewBuilder';
 import { Dropzone } from './dropzone';
 
 interface Props {
-  params: { category: keyof typeof categories };
+  params: { category: CategoryName };
 }
+
+type FormValues = CheckoutAtom[number]['checkout'];
 
 export default function Constructor({ params }: Props) {
   const { categoryName, steps } = categories[params.category];
+
   const [checkoutState, setCheckoutState] = useAtom(checkoutAtom);
-  const form = useForm<(typeof checkoutState)['checkout']>();
+  const form = useForm<FormValues>();
   const router = useRouter();
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const shouldCheckout = activeStepIndex === steps.length - 1;
 
   const onNextStep = () => setActiveStepIndex(current => (current < steps.length ? current + 1 : current));
   const onPrevStep = () => setActiveStepIndex(current => (current > 0 ? current - 1 : current));
 
-  const handleSubmit = (values: (typeof checkoutState)['checkout']) => {
-    setCheckoutState({ category: params.category, checkout: values });
+  const handleSubmit = (values: FormValues) => {
+    setCheckoutState([...checkoutState, { id: uuid.v1(), category: params.category, checkout: values }]);
     router.push('/checkout');
   };
-  const shouldCheckout = activeStepIndex === steps.length - 1;
+
+  const onBackToCatalogue = () => {
+    router.push('/browse');
+  };
 
   return (
     <M.Container>
@@ -103,6 +112,10 @@ export default function Constructor({ params }: Props) {
                     content = <Dropzone {...form.getInputProps(selectorName)} />;
                   }
 
+                  if (options.data === 'previewBuilder') {
+                    content = <PreviewBuilder type={params.category} />;
+                  }
+
                   if (options.data === 'sizeInputGroup') {
                     content = (
                       <M.Group grow {...form.getInputProps(selectorName)}>
@@ -132,9 +145,13 @@ export default function Constructor({ params }: Props) {
         </M.Stepper>
 
         <M.Group grow mt='md'>
-          <M.Button onClick={onPrevStep} disabled={activeStepIndex === 0}>
-            Previous step
-          </M.Button>
+          {activeStepIndex === 0 ? (
+            <M.Button onClick={onBackToCatalogue}>Back to catalogue</M.Button>
+          ) : (
+            <M.Button onClick={onPrevStep} disabled={activeStepIndex === 0}>
+              Previous step
+            </M.Button>
+          )}
           {shouldCheckout ? (
             // key prevent from from submitting...
             <M.Button key='submit' type='submit' fullWidth color='green'>

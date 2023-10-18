@@ -5,7 +5,9 @@ import { CategoryName, Categories } from '../metaData';
 
 export type CheckoutAtom = {
   id: string;
-  category?: CategoryName;
+  image?: string;
+  itemQuantity: number;
+  category: CategoryName;
   checkout?: {
     [key: keyof Categories[CategoryName]['steps'][number]['options']]: string;
   };

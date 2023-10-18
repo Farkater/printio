@@ -8,7 +8,11 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 import calendarImage from '@/../public/calendar.jpeg';
 
-export const CalendarPreview = () => {
+interface Props {
+  setImg(value?: string): void;
+}
+
+export const CalendarPreview = ({ setImg }: Props) => {
   const { editor, onReady } = useFabricJSEditor();
   const openRef = useRef<() => void>(null);
 
@@ -35,21 +39,6 @@ export const CalendarPreview = () => {
     });
   };
 
-  function saveImage() {
-    const href = editor?.canvas.toDataURL({
-      format: 'jpeg',
-      quality: 0.8,
-    });
-
-    const elem = window.document.createElement('a');
-    elem.href = href || '';
-
-    elem.download = 'preview.jpeg';
-    document.body.appendChild(elem);
-    elem.click();
-    document.body.removeChild(elem);
-  }
-
   useEffect(() => {
     editor?.canvas.setHeight(calendarImage.height);
 
@@ -70,7 +59,16 @@ export const CalendarPreview = () => {
 
       canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
-  }, [editor]);
+
+    editor?.canvas.on('mouse:up', () => {
+      const href = editor?.canvas.toDataURL({
+        format: 'jpeg',
+        quality: 0.8,
+      });
+
+      setImg(href);
+    });
+  }, [editor, setImg]);
 
   return (
     <div>
@@ -82,7 +80,6 @@ export const CalendarPreview = () => {
         </Group>
       </Dropzone>
       <FabricJSCanvas onReady={onReady} />
-      <Button onClick={saveImage}>Export</Button>
     </div>
   );
 };

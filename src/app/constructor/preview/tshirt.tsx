@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import { fabric } from 'fabric';
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react';
 import { Group, Button } from '@mantine/core';
@@ -8,7 +8,11 @@ import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 import tshirtImage from '@/../public/shirt.webp';
 
-export const TshirtPreview = () => {
+interface Props {
+  setImg(value?: string): void;
+}
+
+const Preview = ({ setImg }: Props) => {
   const { editor, onReady } = useFabricJSEditor();
   const openRef = useRef<() => void>(null);
 
@@ -35,21 +39,6 @@ export const TshirtPreview = () => {
     });
   };
 
-  function saveImage() {
-    const href = editor?.canvas.toDataURL({
-      format: 'jpeg',
-      quality: 0.8,
-    });
-
-    const elem = window.document.createElement('a');
-    elem.href = href || '';
-
-    elem.download = 'preview.jpeg';
-    document.body.appendChild(elem);
-    elem.click();
-    document.body.removeChild(elem);
-  }
-
   useEffect(() => {
     editor?.canvas.setHeight(tshirtImage.height);
 
@@ -70,7 +59,16 @@ export const TshirtPreview = () => {
 
       canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas));
     });
-  }, [editor]);
+
+    editor?.canvas.on('mouse:up', () => {
+      const href = editor?.canvas.toDataURL({
+        format: 'jpeg',
+        quality: 0.8,
+      });
+
+      setImg(href);
+    });
+  }, [editor, setImg]);
 
   return (
     <div>
@@ -82,7 +80,8 @@ export const TshirtPreview = () => {
         </Group>
       </Dropzone>
       <FabricJSCanvas onReady={onReady} />
-      <Button onClick={saveImage}>Export</Button>
     </div>
   );
 };
+
+export const TshirtPreview = memo(Preview);

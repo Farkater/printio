@@ -23,6 +23,7 @@ export default function Constructor({ params }: Props) {
   const [checkoutState, setCheckoutState] = useAtom(checkoutAtom);
   const form = useForm<FormValues>();
   const router = useRouter();
+  const [img, setImg] = useState<string | undefined>();
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const shouldCheckout = activeStepIndex === steps.length - 1;
 
@@ -30,7 +31,10 @@ export default function Constructor({ params }: Props) {
   const onPrevStep = () => setActiveStepIndex(current => (current > 0 ? current - 1 : current));
 
   const handleSubmit = (values: FormValues) => {
-    setCheckoutState([...checkoutState, { id: uuid.v1(), category: params.category, checkout: values }]);
+    setCheckoutState([
+      ...checkoutState,
+      { id: uuid.v1(), category: params.category, checkout: values, image: img, itemQuantity: 1 },
+    ]);
     router.push('/checkout');
   };
 
@@ -113,7 +117,7 @@ export default function Constructor({ params }: Props) {
                   }
 
                   if (options.data === 'previewBuilder') {
-                    content = <PreviewBuilder type={params.category} />;
+                    content = <PreviewBuilder type={params.category} setImg={setImg} />;
                   }
 
                   if (options.data === 'sizeInputGroup') {

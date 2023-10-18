@@ -3,9 +3,10 @@
 import * as M from '@mantine/core';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
-import { Image } from '@mantine/core';
+import { Image, ActionIcon } from '@mantine/core';
 import { usePathname } from 'next/navigation';
 import logo from '@/../public/logo.svg';
+import { IconShoppingCart } from '@tabler/icons-react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,10 +32,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               })}
               header={
                 <M.Header height={60} p='xs'>
-                  <M.Flex justify='start'>
+                  <M.Flex justify='space-between'>
                     <Link href={'/'}>
                       <Image width={65} src={logo.src} alt='' />
-                      {/* <M.Title align='center'>Print.io</M.Title> */}
+                    </Link>
+                    <Link href={'/checkout'}>
+                      <ActionIcon size={42} variant='transparent'>
+                        <IconShoppingCart />
+                      </ActionIcon>
                     </Link>
                   </M.Flex>
                 </M.Header>

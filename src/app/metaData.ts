@@ -30,6 +30,7 @@ export type Category = {
   path: string;
   steps: Step[];
   previewImage: string;
+  price: number;
 };
 
 export type Categories = {
@@ -41,6 +42,7 @@ export const categories: Categories = {
     categoryName: 'Calendars',
     path: 'browse/calendars',
     previewImage: CalendarImg.src,
+    price: 45,
     steps: [
       {
         stepTitle: 'Properties',
@@ -95,6 +97,7 @@ export const categories: Categories = {
     categoryName: 'T-shirts',
     path: 'browse/tshirts',
     previewImage: TshirtsImg.src,
+    price:75,
     steps: [
       {
         stepTitle: 'Properties',
@@ -134,6 +137,7 @@ export const categories: Categories = {
     categoryName: 'Paper bags',
     path: 'browse/bags',
     previewImage: PaperBarsImg.src,
+    price: 10,
     steps: [
       {
         stepTitle: 'Material',
@@ -200,6 +204,7 @@ export const categories: Categories = {
     categoryName: 'Stickers',
     path: 'browse/stickers',
     previewImage: StickersImg.src,
+    price: 5,
     steps: [
       {
         stepTitle: 'Parameters',
@@ -219,6 +224,7 @@ export const categories: Categories = {
     categoryName: 'Posters',
     path: 'browse/posters',
     previewImage: PostersImg.src,
+    price: 25,
     steps: [
       {
         stepTitle: 'Parameters',

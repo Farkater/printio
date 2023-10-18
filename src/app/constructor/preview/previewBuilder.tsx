@@ -5,14 +5,15 @@ import { CalendarPreview } from './calendar';
 
 interface Props {
   type: `${CategoryName}`;
+  setImg(value?: string): void;
 }
 
-export const PreviewBuilder = ({ type }: Props) => {
+export const PreviewBuilder = ({ type, setImg }: Props) => {
   if (type === 'tshirts') {
-    return <TshirtPreview />;
+    return <TshirtPreview setImg={setImg} />;
   }
   if (type === 'calendars') {
-    return <CalendarPreview />;
+    return <CalendarPreview setImg={setImg} />;
   }
 
   return <div>PreviewBuilder</div>;

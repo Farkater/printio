@@ -63,6 +63,11 @@ function CheckoutCard({ checkoutItem }: CheckoutCardProps) {
         height={200}
         alt='123'
         withPlaceholder
+        imageProps={{
+          style: {
+            objectPosition: 'top',
+          },
+        }}
       />
       <Box ml='lg' style={{ width: '100%' }}>
         <Group mb='lg' position='apart'>
@@ -103,22 +108,38 @@ function CheckoutCard({ checkoutItem }: CheckoutCardProps) {
           </ActionIcon>
         </Group>
 
-        <Flex justify={'space-between'} mt='xl'>
+        <Flex justify='space-between' mt='xl'>
           <Group>
             {Object.entries(checkoutItem.checkout).map(([key, value]) => {
               let option: Option | undefined;
 
               steps.forEach(step => {
-                const found = Object.entries(step.options).find(([optionKey]) => optionKey === key)?.[1];
+                const found = Object.entries(step.options).find(([optionKey]) => {
+                  if (optionKey === 'size' && key.includes('size')) {
+                    return true;
+                  }
+
+                  return optionKey === key;
+                })?.[1];
                 if (found) option = found;
               });
 
               if (!option) return ':(';
 
-              const label = option?.label;
+              let label = option?.label;
               const data = option?.data;
 
               if (label.includes('Background') || label.includes('color')) return null;
+
+              if (key === 'size_width') {
+                label = 'Width';
+              }
+              if (key === 'size_height') {
+                label = 'Height';
+              }
+              if (key === 'size_length') {
+                label = 'Length';
+              }
 
               let content: React.ReactNode = value;
 

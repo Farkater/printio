@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, memo } from 'react';
 import { fabric } from 'fabric';
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react';
-import { Group, Button } from '@mantine/core';
+import { Group, Button, Box } from '@mantine/core';
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
 import tshirtImage from '@/../public/shirt.webp';
@@ -79,7 +79,9 @@ const Preview = ({ setImg }: Props) => {
           </Button>
         </Group>
       </Dropzone>
-      <FabricJSCanvas onReady={onReady} />
+      <Box mt='lg'>
+        <FabricJSCanvas onReady={onReady} />
+      </Box>
     </div>
   );
 };

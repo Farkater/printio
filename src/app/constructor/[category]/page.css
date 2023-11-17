@@ -1,0 +1,7 @@
+.mantine-Stepper-content {
+  height: 100%;
+}
+
+.mantine-Stepper-content > div {
+  height: 100%;
+}

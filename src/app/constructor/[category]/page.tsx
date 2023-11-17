@@ -10,6 +10,7 @@ import { checkoutAtom, CheckoutAtom } from '@/app/checkout/state';
 import { categories, CategoryName } from '@/app/metaData';
 import { PreviewBuilder } from '../preview/previewBuilder';
 import { Dropzone } from './dropzone';
+import './page.css';
 
 interface Props {
   params: { category: CategoryName };
@@ -24,6 +25,7 @@ export default function Constructor({ params }: Props) {
   const form = useForm<FormValues>();
   const router = useRouter();
   const [img, setImg] = useState<string | undefined>();
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const shouldCheckout = activeStepIndex === steps.length - 1;
 
@@ -38,17 +40,35 @@ export default function Constructor({ params }: Props) {
     router.push('/checkout');
   };
 
+  const onDimensionsChange = (selector: string) => (value: number) => {
+    const fieldName = selector.includes('width') ? 'width' : selector.includes('height') ? 'height' : 'length';
+
+    setDimensions({
+      ...dimensions,
+      [fieldName]: value,
+    });
+
+    form.setFieldValue(selector, value);
+  };
+
   const onBackToCatalogue = () => {
     router.push('/browse');
   };
 
   return (
-    <M.Container>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+    <M.Container style={{ height: '100%' }}>
+      <form
+        onSubmit={form.onSubmit(handleSubmit)}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
         <M.Title align='center' mb='lg'>
           Constructor of {categoryName}
         </M.Title>
-        <M.Stepper active={activeStepIndex} onStepClick={setActiveStepIndex} breakpoint='sm'>
+        <M.Stepper active={activeStepIndex} onStepClick={setActiveStepIndex} breakpoint='sm' style={{ flex: 1 }}>
           {steps.map(step => {
             const { stepTitle, stepDescription, options: stepOptions } = step;
 
@@ -117,17 +137,49 @@ export default function Constructor({ params }: Props) {
                   }
 
                   if (options.data === 'previewBuilder') {
-                    content = <PreviewBuilder type={params.category} setImg={setImg} />;
+                    content = <PreviewBuilder type={params.category} setImg={setImg} dimensions={dimensions} />;
                   }
 
-                  if (options.data === 'sizeInputGroup') {
+                  if (options.data === 'ThreeSizeInputGroup') {
                     content = (
-                      <M.Group grow {...form.getInputProps(selectorName)}>
+                      <M.Group grow>
                         <M.Text>{options.label}</M.Text>
                         <M.Group grow>
-                          <M.NumberInput label='Width' />
-                          <M.NumberInput label='Height' />
-                          <M.NumberInput label='Length' />
+                          <M.NumberInput
+                            label='Width'
+                            {...form.getInputProps(selectorName + '_width')}
+                            onChange={onDimensionsChange(selectorName + '_width')}
+                          />
+                          <M.NumberInput
+                            label='Height'
+                            {...form.getInputProps(selectorName + '_height')}
+                            onChange={onDimensionsChange(selectorName + '_height')}
+                          />
+                          <M.NumberInput
+                            label='Length'
+                            {...form.getInputProps(selectorName + '_length')}
+                            onChange={onDimensionsChange(selectorName + '_length')}
+                          />
+                        </M.Group>
+                      </M.Group>
+                    );
+                  }
+
+                  if (options.data === 'TwoSizeInputGroup') {
+                    content = (
+                      <M.Group grow>
+                        <M.Text>{options.label}</M.Text>
+                        <M.Group grow>
+                          <M.NumberInput
+                            label='Width'
+                            {...form.getInputProps(selectorName + '_width')}
+                            onChange={onDimensionsChange(selectorName + '_width')}
+                          />
+                          <M.NumberInput
+                            label='Height'
+                            {...form.getInputProps(selectorName + '_height')}
+                            onChange={onDimensionsChange(selectorName + '_height')}
+                          />
                         </M.Group>
                       </M.Group>
                     );

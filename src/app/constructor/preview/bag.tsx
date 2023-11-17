@@ -6,13 +6,13 @@ import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react';
 import { Group, Button, Box } from '@mantine/core';
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
-import calendarImage from '@/../public/calendar.jpeg';
+import bagImage from '@/../public/bagtransparent.webp';
 
 interface Props {
   setImg(value?: string): void;
 }
 
-export const CalendarPreview = ({ setImg }: Props) => {
+export const BagPreview = ({ setImg }: Props) => {
   const { editor, onReady } = useFabricJSEditor();
   const openRef = useRef<() => void>(null);
 
@@ -40,9 +40,9 @@ export const CalendarPreview = ({ setImg }: Props) => {
   };
 
   useEffect(() => {
-    editor?.canvas.setHeight(calendarImage.height);
+    editor?.canvas.setHeight(bagImage.height);
 
-    fabric.Image.fromURL(calendarImage.src, img => {
+    fabric.Image.fromURL(bagImage.src, img => {
       if (!editor?.canvas) return;
       const { canvas } = editor;
       if (!canvas.height || !canvas.width) return;

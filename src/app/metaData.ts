@@ -5,7 +5,14 @@ import PostersImg from '../../public/Posters-2.webp';
 import StickersImg from '../../public/Stickers-1.webp';
 
 export type CategoryName = 'calendars' | 'tshirts' | 'bags' | 'stickers' | 'posters';
-export type Selector = 'file' | 'color' | 'boolean' | 'space' | 'sizeInputGroup' | 'previewBuilder';
+export type Selector =
+  | 'file'
+  | 'color'
+  | 'boolean'
+  | 'space'
+  | 'TwoSizeInputGroup'
+  | 'ThreeSizeInputGroup'
+  | 'previewBuilder';
 
 export type Option = {
   label: string;
@@ -97,7 +104,7 @@ export const categories: Categories = {
     categoryName: 'T-shirts',
     path: 'browse/tshirts',
     previewImage: TshirtsImg.src,
-    price:75,
+    price: 75,
     steps: [
       {
         stepTitle: 'Properties',
@@ -158,7 +165,7 @@ export const categories: Categories = {
           size: {
             label: 'Size',
             description: 'Enter size',
-            data: 'sizeInputGroup',
+            data: 'ThreeSizeInputGroup',
           },
           finish: {
             label: 'Finish',
@@ -169,6 +176,17 @@ export const categories: Categories = {
             label: 'Foil',
             description: 'Do you want foil on the surface?',
             data: 'boolean',
+          },
+        },
+      },
+      {
+        stepTitle: 'Print',
+        stepDescription: 'Chose print',
+        options: {
+          file: {
+            label: 'Custom',
+            description: 'Upload your file',
+            data: 'previewBuilder',
           },
         },
       },
@@ -214,7 +232,18 @@ export const categories: Categories = {
             label: 'Size',
             description:
               'Enter size, for shape different from rectangle please consider outer points as a rectangle wall',
-            data: 'sizeInputGroup',
+            data: 'TwoSizeInputGroup',
+          },
+        },
+      },
+      {
+        stepTitle: 'Print',
+        stepDescription: 'Chose print',
+        options: {
+          file: {
+            label: 'Custom',
+            description: 'Upload your file',
+            data: 'previewBuilder',
           },
         },
       },
@@ -233,7 +262,18 @@ export const categories: Categories = {
           size: {
             label: 'Size',
             description: 'Enter size',
-            data: 'sizeInputGroup',
+            data: 'TwoSizeInputGroup',
+          },
+        },
+      },
+      {
+        stepTitle: 'Print',
+        stepDescription: 'Chose print',
+        options: {
+          file: {
+            label: 'Custom',
+            description: 'Upload your file',
+            data: 'previewBuilder',
           },
         },
       },
